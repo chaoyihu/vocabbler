@@ -1,0 +1,29 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>Words List</h1>
+  <p>Manage your words. English is the primary language here and should never be null, whereas counterparts of the English word in other languages can be added optionally.</p>
+  <div style="width:50%;display:flex;">
+    <button id="quiz_btn" onclick="start_quiz();">Start Quiz</button>
+    <button id="new_word_btn" onclick="add_new_word();">Add New Word</button>
+  </div>
+  <form action="new_word_input">
+      <label for="new_word_en">English *:</label> <input id="new_word_en" placeholder="apple" required>
+      <label for="new_word_he">Hebrew:</label>  <input id="new_word_he" placeholder="תפוח עץ">
+      <label for="new_word_pt">Portuguese:</label> <input id="new_word_pt" placeholder="maçã">
+      <label for="new_word_cn">Chinese:</label> <input id="new_word_cn" placeholder="苹果">
+  </form>
+  <table id="words_list_table">
+    <!--words in database will be shown here-->
+  </table>
+
+  <script src="/javascripts/words.js"></script>
+</body>
+
+</html>
