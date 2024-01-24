@@ -6,6 +6,7 @@ var cons = require('consolidate');
 
 var indexRouter = require('./routes/index_routes');
 var wordsRouter = require('./routes/words_routes');
+var quizRouter = require('./routes/quiz_routes');
 
 var app = express();
 
@@ -17,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/words', wordsRouter);
+app.use('/quiz', quizRouter);
 
 // view engine setup
 app.engine('html', cons.swig)
