@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 var fs = require('fs');
 
-// Check DB
+
 try {
   fs.statSync(path.join(__dirname, '../database/vocabbler.db'));
   console.log('DB detected.');
@@ -28,41 +28,6 @@ function create_db() {
     }
   });
 
-  db.get(
-    `SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='langs';`, 
-      function(err, table_exists) {
-        if (err) {
-          console.error(err.message);
-          return;
-        }
-        if (table_exists == 1) {
-          return;
-        } else {
-          db.run(`CREATE TABLE langs (
-            iso_code text NOT NULL,
-            lang_name text NOT NULL
-          )`)
-          var lang_json = JSON.parse(fs.readFileSync(
-            path.join(__dirname, "../database/misc/isocode2language.json"), 'utf8'));
-          const pairs = lang_json.map(([iso, common_name]) => `(${iso}, ${common_name})`).join("");
-          db.run(`INSERT INTO langs (iso_code, lang_name) VALUES ${pairs}}`);
-          db.serialize(() => {
-            db.each(`SELECT * FROM langs`, (err, row) => {
-            }, (err, num) => {
-              // db.each is asynchronous, so make sure to place send() in the callback
-              // so that data is sent after all rows are executed
-              if (err) {
-                console.error(err.message);
-              } else {
-                console.log(row.iso_code + "\t" + row.lang_name);
-              }
-            });
-          });
-        }
-      }
-  )
-
-
   db.run(`CREATE TABLE IF NOT EXISTS words (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     en text NOT NULL,
@@ -70,7 +35,62 @@ function create_db() {
     pt text DEFAULT "(blank)",
     cn text DEFAULT "(blank)"
   )`);
+
+  db.serialize(() => {
+    db.get(
+      `SELECT COUNT(*) as sig FROM sqlite_master WHERE type='table' AND name='langs';`,
+      function (err, table_exists) {
+        console.log(table_exists);
+        if (err) {
+          console.error(err.message);
+          return;
+        }
+        if (table_exists.sig === 0) {
+          console.log("Table does not exist, create it");
+          createTable();
+        }
+      }
+    );
+  });
+  
+  function createTable() {
+    db.run(
+      `CREATE TABLE langs (
+        iso_code text NOT NULL,
+        lang_name text NOT NULL
+      )`,
+      function (err) {
+        if (err) {
+          console.error(err.message);
+          return;
+        }
+        console.log("Table 'langs' created.");
+        // Table created, now insert data
+        insertData();
+      }
+    );
+  }
+  
+  function insertData() {
+    var lang_json = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../database/misc/isocode2language.json"), "utf8")
+    );
+    const pairs = Object.entries(lang_json)
+      .map(([iso, common_name]) => `("${iso}", "${common_name}")`)
+      .join(",");
+    db.run(`INSERT INTO langs (iso_code, lang_name) VALUES ${pairs}`, function (err) {
+      if (err) {
+        console.log("inserting");
+        console.error(err.message);
+        return;
+      }
+      console.log("Data inserted into 'langs' table.");
+      db.close();
+    });
+  }
+
 }
+
 
 
 router.get('/', function(req, res, next) {
@@ -174,8 +194,7 @@ router.post('/create', function(req, res, next) {
     }
   );
 
-
-    db.close();
+  db.close();
 });
 
 module.exports = router;

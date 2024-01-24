@@ -1,0 +1,29 @@
+<html>
+
+<head>
+  <title>Vocabbler|Quiz</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>Quiz</h1>
+  <p>Note:</p>
+  <ul>
+    <li>Quiz on words marked "new" or "learning".</li>
+    <li>10% of all words appear in quiz are randomly picked from words marked "learned". If you miss a learned word, it will downgrade to "learning".</li>
+    <li>You can archive a word on <a href="/words">the word page</a> if you do not want to see this word again in future quizzes.</li>
+  </ul>
+  
+  <div id="qa-container">
+    <p>Quiz settings</p>
+    <form>
+    <label for="number-of-questions"></label>How many questions?<input id="number-of-questions" type="number" min="1" max="100">
+    </form>
+    <button id="start-quiz" onclick="start_quiz();">Start Quiz</button>
+  </div>
+
+  <script src="/javascripts/quiz.js"></script>
+</body>
+
+</html>

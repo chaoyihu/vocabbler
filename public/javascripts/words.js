@@ -43,7 +43,7 @@ function quiz() {
 
 function add_new_word() {
     if (!document.getElementById('new_word_en').value) {
-        alert("Please fill in all mandatory fields, marked with *");
+        alert("Please enter the word in English. It is a mandatory field marked with *");
         return;
     }
     let data = {
@@ -52,6 +52,10 @@ function add_new_word() {
         "pt"    : document.getElementById('new_word_pt').value,
         "cn"    : document.getElementById('new_word_cn').value
     };
+    if (Object.values(data).reduce((cnt, x) => (x != '' ? cnt + 1 : cnt), 0) < 2) {
+        alert("Please enter the word in at least two languages to make a valid pair.");
+        return;
+    }
     var url = window.location.host + "/words/create";
     var protocol = "http";
     var xhr = new XMLHttpRequest();
