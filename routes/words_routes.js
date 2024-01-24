@@ -28,6 +28,41 @@ function create_db() {
     }
   });
 
+  db.get(
+    `SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='langs';`, 
+      function(err, table_exists) {
+        if (err) {
+          console.error(err.message);
+          return;
+        }
+        if (table_exists == 1) {
+          return;
+        } else {
+          db.run(`CREATE TABLE langs (
+            iso_code text NOT NULL,
+            lang_name text NOT NULL
+          )`)
+          var lang_json = JSON.parse(fs.readFileSync(
+            path.join(__dirname, "../database/misc/isocode2language.json"), 'utf8'));
+          const pairs = lang_json.map(([iso, common_name]) => `(${iso}, ${common_name})`).join("");
+          db.run(`INSERT INTO langs (iso_code, lang_name) VALUES ${pairs}}`);
+          db.serialize(() => {
+            db.each(`SELECT * FROM langs`, (err, row) => {
+            }, (err, num) => {
+              // db.each is asynchronous, so make sure to place send() in the callback
+              // so that data is sent after all rows are executed
+              if (err) {
+                console.error(err.message);
+              } else {
+                console.log(row.iso_code + "\t" + row.lang_name);
+              }
+            });
+          });
+        }
+      }
+  )
+
+
   db.run(`CREATE TABLE IF NOT EXISTS words (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     en text NOT NULL,
