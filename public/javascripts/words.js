@@ -15,10 +15,6 @@ function get_words() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = () => {
         var word_list = JSON.parse(xhr.responseText)["words"];
-        console.log(word_list);
-        console.log(word_list.map(word => 
-            "<tr>" + Object.keys(word).map(key => "<th>" + word[key] + "</th>") + "</tr>"
-        ).join(""));
         let word_list_table = document.getElementById("words_list_table");
         word_list_table.innerHTML = `<tr>
             <th>id</th>
@@ -50,7 +46,7 @@ function add_new_word() {
         "en"    : document.getElementById('new_word_en').value,
         "he"    : document.getElementById('new_word_he').value,
         "pt"    : document.getElementById('new_word_pt').value,
-        "cn"    : document.getElementById('new_word_cn').value
+        "zh_cn" : document.getElementById('new_word_zh_cn').value
     };
     if (Object.values(data).reduce((cnt, x) => (x != '' ? cnt + 1 : cnt), 0) < 2) {
         alert("Please enter the word in at least two languages to make a valid pair.");
@@ -74,15 +70,14 @@ function add_new_word() {
                 alert("updated" + response.updated);
             } else {   // new word inserted
                 for (w in response["inserted"]) {
-                    word_list_table.innerHTML = map()
-                    ```
+                    word_list_table.innerHTML += `
                     <tr>
-                        <td>${w.id}</td>
-                        <td>${w.en}</td>
-                        <td>${w.he}</td>
-                        <td>${w.pt}</td>
-                        <td>${w.cn}</td>
-                    </tr>``` + word_list_table.innerHTML;
+                        <td>${w["id"]}</td>
+                        <td>${w["en"]}</td>
+                        <td>${w["he"]}</td>
+                        <td>${w["pt"]}</td>
+                        <td>${w["zh_cn"]}</td>
+                    </tr>`;
                 }
             } 
         }

@@ -33,7 +33,7 @@ function create_db() {
     en text NOT NULL,
     he text DEFAULT "(blank)",
     pt text DEFAULT "(blank)",
-    cn text DEFAULT "(blank)"
+    zh_cn text DEFAULT "(blank)"
   )`);
 
   db.serialize(() => {
@@ -157,7 +157,7 @@ router.post('/create', function(req, res, next) {
       if (count_row.cntr == 1) {
         console.log("Updating existing row.");
         var updates = Object.entries(row).filter(([k, v]) => v !== '' && v!== null && v !== undefined);
-        var subq= updates.map(([k, v]) => `${k} = ?`).join(',');
+        var subq = updates.map(([k, v]) => `${k} = ?`).join(',');
         db.run(`UPDATE words SET ${subq} WHERE en = ?`,
           [...updates.map(([k, v]) => v), row['en']], function(err) {
             if (err) {
