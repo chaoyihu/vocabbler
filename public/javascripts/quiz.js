@@ -50,6 +50,7 @@ function get_question() {
                 <h4> In ${response["lang1"]}: <strong>${response["word_lang1"]}<strong> </h4>
                 <h4> In ${response["lang2"]}: <strong>?<strong> </h4>
             `;
+            document.getElementById("user-answer").text = '';
         }
     };
     xhr.send();

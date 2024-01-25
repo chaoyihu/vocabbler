@@ -158,36 +158,37 @@ router.post('/create', function(req, res, next) {
         console.log("Updating existing row.");
         var updates = Object.entries(row).filter(([k, v]) => v !== '' && v!== null && v !== undefined);
         var subq = updates.map(([k, v]) => `${k} = ?`).join(',');
-        db.run(`UPDATE words SET ${subq} WHERE en = ?`,
-          [...updates.map(([k, v]) => v), row['en']], function(err) {
+        db.get(`UPDATE words SET ${subq} WHERE en = ? RETURNING *`,
+          [...updates.map(([k, v]) => v), row['en']], function(err, row) {
             if (err) {
               res.send({"status": 0});
               return console.log(err.message);
             }
             console.log(`A row has been updated.`);
-            var updated = row;
-            updated["id"] = this.lastID;
             let data = {
               "status": 1, // success
-              "updated": updated
+              "updated": {}
             };
+            for (const column in row) {
+              data["updated"][column] = row[column];
+            }
             res.send(data);
         })
       } else {
-        db.run(`INSERT INTO words(${columns.join(',')}) VALUES (${values.map(() => '?').join(',')})`, 
-              values, function(err) {
+        db.get(`INSERT INTO words (${columns.join(',')}) VALUES (${values.map(() => '?').join(',')}) RETURNING *`, 
+              values, function(err, row) {
           if (err) {
             res.send({"status": 0});
             return console.log(err.message);
           }
-          // get the last insert id
           console.log(`A row has been inserted with row_id ${this.lastID}`);
-          var inserted = row;
-          inserted["id"] = this.lastID;
           let data = {
             "status": 1, // success
-            "inserted": inserted
+            "inserted": {}
           };
+          for (const column in row) {
+            data["inserted"][column] = row[column];
+          }
           res.send(data);
         });
       }
@@ -196,5 +197,26 @@ router.post('/create', function(req, res, next) {
 
   db.close();
 });
+
+
+router.delete('/delete/:id', function (req, res) {
+  const wid = parseInt(req.params.id, 10);
+  let db = new sqlite3.Database(path.join(__dirname, '../database/vocabbler.db'), (err) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log('Connected to database.');
+    }
+  });
+  db.run(`DELETE FROM words WHERE id=?`, [wid], function (err) {
+    if (err) {
+      res.send({"status": 0});
+      return console.log(err.message);
+    }
+    console.log(`Deleted row with id ${wid}`);
+    res.send({"status": 1});
+  })
+  db.close();
+})
 
 module.exports = router;
