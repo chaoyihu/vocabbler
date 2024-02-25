@@ -10,7 +10,7 @@
 - Database: SQLite
 
 ### ▶️ To run this application:
-1. Get source code by running `git clone git@github.com:zoehcycy/vocabbler.git`
+1. Get source code by running `https://github.com/chaoyihu/vocabbler.git`
 2. Change to the project directory by running `cd vocabbler`
 3. Install dependencies by running `npm install`
 4. Start the application by running `npm start`
