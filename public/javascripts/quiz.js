@@ -18,7 +18,7 @@ function start_quiz() {
         <form>
             <label for="user-answer">Your answer:</label> <input id="user-answer">
         </form>
-        <button id="submit-quiz-answer" onclick="submit_quiz_answer();">Submit</button>
+        <button class="button-primary" id="submit-quiz-answer" onclick="submit_quiz_answer();">Submit</button>
         </div>
         <div class="quiz_status_bar" id="quiz-status-bar">
             ▶️
@@ -31,7 +31,7 @@ function start_quiz() {
 }
 
 function get_question() {
-    var url = window.location.host + "/quiz/question";
+    var url = window.location.host + "/vocabbler/quiz/question";
     var protocol = "http";
     var xhr = new XMLHttpRequest();
     if (!url.startsWith(protocol)) {
@@ -63,6 +63,8 @@ function submit_quiz_answer() {
         alert("Your need to provide an answer.");
         return;
     }
+
+    document.getElementById('user-answer').value = '';
     
     if (user_answer.toLowerCase() == correct_answer.toLowerCase()) {
         document.getElementById("quiz-status-bar").innerHTML += `✅`;

@@ -14,7 +14,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 app.use('/', indexRouter);
 app.use('/words', wordsRouter);
@@ -22,7 +22,7 @@ app.use('/quiz', quizRouter);
 
 // view engine setup
 app.engine('html', cons.swig)
-app.set('views', path.join(__dirname, 'public/views'));
+app.set('views', 'public/views');
 app.set('view engine', 'html');
 
 module.exports = app;

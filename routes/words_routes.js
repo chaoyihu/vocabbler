@@ -31,7 +31,6 @@ function create_db() {
   db.run(`CREATE TABLE IF NOT EXISTS words (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     en text NOT NULL,
-    he text DEFAULT "(blank)",
     pt text DEFAULT "(blank)",
     zh_cn text DEFAULT "(blank)"
   )`);

@@ -3,27 +3,26 @@
 <head>
   <title>Vocabbler|Quiz</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/vocabbler/stylesheets/style.css">
 </head>
 
-<body>
+<body class="page-content">
   <h1>Quiz</h1>
-  <p>Note:</p>
-  <ul>
+  <!-- <ul>
     <li>Quiz on words marked "new" or "learning".</li>
     <li>10% of all words appear in quiz are randomly picked from words marked "learned". If you miss a learned word, it will downgrade to "learning".</li>
-    <li>You can archive a word on <a href="/words">the word page</a> if you do not want to see this word again in future quizzes.</li>
-  </ul>
+  </ul> -->
+  <a href="/vocabbler">Return to the home page</a>
   
   <div id="qa-container">
-    <p>Quiz settings</p>
+    <h2>Quiz settings</h2>
     <form>
     <label for="number-of-questions"></label>How many questions? (1~100)<input id="number-of-questions" type="number" min="1" max="100">
     </form>
-    <button id="start-quiz" onclick="start_quiz();">Start Quiz</button>
+    <button class="button-primary" id="start-quiz" onclick="start_quiz();">Start Quiz</button>
   </div>
 
-  <script src="/javascripts/quiz.js"></script>
+  <script src="/vocabbler/javascripts/quiz.js"></script>
 </body>
 
 </html>

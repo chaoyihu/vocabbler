@@ -3,19 +3,18 @@
 <head>
   <title>Vocabbler|Words</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/vocabbler/stylesheets/style.css">
 </head>
 
-<body>
+<body class="page-content">
   <h1>Words List</h1>
   <p>Manage your words. English is the primary language here and should never be null, whereas counterparts of the English word in other languages can be added optionally.</p>
   <div style="width:50%;display:flex;">
-    <button id="quiz_btn" onclick="quiz();">Quiz Me</button>
-    <button id="new_word_btn" onclick="add_new_word();">Add New Word</button>
+    <button class="button-primary" id="quiz_btn" onclick="quiz();">Quiz Me</button>
+    <button class="button-primary" id="new_word_btn" onclick="add_new_word();">Add New Word</button>
   </div>
   <form action="new_word_input">
       <p><label for="new_word_en">English * :</label> <input id="new_word_en" placeholder="apple" required></p>
-      <p><label for="new_word_he">Hebrew    :</label> <input id="new_word_he" placeholder="תפוח עץ"></p>
       <p><label for="new_word_pt">Portuguese:</label> <input id="new_word_pt" placeholder="maçã"></p>
       <p><label for="new_word_zh_cn">Chinese (Simplified):</label> <input id="new_word_zh_cn" placeholder="苹果"></p>
   </form>
@@ -23,7 +22,7 @@
     <!--words in database will be shown here-->
   </table>
 
-  <script src="/javascripts/words.js"></script>
+  <script src="/vocabbler/javascripts/words.js"></script>
 </body>
 
 </html>

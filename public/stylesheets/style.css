@@ -3,6 +3,11 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.page-content {
+  width: 800px;
+  margin-left: calc((100vw - 800px) / 2);
+}
+
 a {
   color: #00B7FF;
 }
@@ -23,11 +28,6 @@ table {
   font-size: 12pt;
   border-collapse: collapse;
 }
-table thead th,
-table tfoot th {
-  color: #777;
-  background: rgba(0,0,0,.1);
-}
 table caption {
   padding:.5em;
 }
@@ -35,31 +35,35 @@ table th,
 table td {
   padding: .5em;
   border: 1px solid lightgrey;
+  width: 100px;
+  overflow-wrap: normal;
 }
-/* Zebra Table Style */
-[data-table-theme*=zebra] tbody tr:nth-of-type(odd) {
-  background: rgba(0,0,0,.05);
+
+table th {
+  background-color: lightblue;
+  border-bottom: black solid 1px;
 }
-[data-table-theme*=zebra][data-table-theme*=dark] tbody tr:nth-of-type(odd) {
-  background: rgba(255,255,255,.05);
+
+
+/* Buttons */
+button {
+  margin: 10px 10px 10px 10px;
+  padding: 5px 10px 5px 10px;
+  border: black solid 1px;
 }
-/* Dark Style */
-[data-table-theme*=dark] {
-  color: #ddd;
-  background: #333;
-  font-size: 12pt;
-  border-collapse: collapse;
+
+.button-primary {
+  background-color: lightblue;
 }
-[data-table-theme*=dark] thead th,
-[data-table-theme*=dark] tfoot th {
-  color: #aaa;
-  background: rgba(0255,255,255,.15);
+
+.button-primary:hover {
+  background-color: lightskyblue;
 }
-[data-table-theme*=dark] caption {
-  padding:.5em;
+
+.button-secondary {
+  background-color:beige;
 }
-[data-table-theme*=dark] th,
-[data-table-theme*=dark] td {
-  padding: .5em;
-  border: 1px solid grey;
+
+.button-secondary:hover {
+  background-color: bisque;
 }

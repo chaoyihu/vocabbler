@@ -4,7 +4,7 @@ get_words();  // call it immediately when loading page
 
 
 function get_words() {
-    var url = window.location.host + "/words/list";
+    var url = window.location.host + "/vocabbler/words/list";
     var protocol = "http";
     var xhr = new XMLHttpRequest();
     if (!url.startsWith(protocol)) {
@@ -21,14 +21,13 @@ function get_words() {
         <tr id="word_table_row_head">
             <th>id</th>
             <th>English</th>
-            <th>Hebrew</th>
             <th>Portuguese</th>
             <th>Chinese</th>
             <th>Action</th>
         </tr>` + word_list.map(word => `
         <tr id="word_table_row_${word["id"]}">
-            ${Object.keys(word).map(key => "<th>" + word[key] + "</th>").join("")}
-            <th><button onclick="delete_word(${word['id']})">delete</button></th>
+            ${Object.keys(word).map(key => "<td>" + word[key] + "</td>").join("")}
+            <td><button  class="button-secondary" onclick="delete_word(${word['id']})">delete</button></td>
         </tr>`
         ).join("");
     };
@@ -37,7 +36,7 @@ function get_words() {
 
 
 function quiz() {
-    var complete_href = "http://" + window.location.host + "/quiz"; 
+    var complete_href = "http://" + window.location.host + "/vocabbler/quiz"; 
     console.log("redirecting to " + complete_href);
     window.location.replace(complete_href); 
 }
@@ -50,7 +49,6 @@ function add_new_word() {
     }
     let data = {
         "en"    : document.getElementById('new_word_en').value,
-        "he"    : document.getElementById('new_word_he').value,
         "pt"    : document.getElementById('new_word_pt').value,
         "zh_cn" : document.getElementById('new_word_zh_cn').value
     };
@@ -58,7 +56,7 @@ function add_new_word() {
         alert("Please enter the word in at least two languages to make a valid pair.");
         return;
     }
-    var url = window.location.host + "/words/create";
+    var url = window.location.host + "/vocabbler/words/create";
     var protocol = "http";
     var xhr = new XMLHttpRequest();
     if (!url.startsWith(protocol)) {
@@ -76,26 +74,27 @@ function add_new_word() {
                 var word = response["updated"];
                 if (word["id"] in words_display) {
                     document.getElementById(`word_table_row_${word["id"]}`)
-                    .innerHTML = `${Object.keys(word).map(key => "<th>" + word[key] + "</th>").join("")}`
+                    .innerHTML = `${Object.keys(word).map(key => "<td>" + word[key] + "</td>").join("")}
+                    <td><button  class="button-secondary" onclick="delete_word(${word['id']})">delete</button></td>`
                 }
             } else {   // new word inserted
                 var word = response["inserted"];
                 word_list_table.innerHTML += `
                     <tr id="word_table_row_${word["id"]}">
-                    ${Object.keys(word).map(key => "<th>" + word[key] + "</th>").join("")}
+                    ${Object.keys(word).map(key => "<td>" + word[key] + "</td>").join("")}
+                    <td><button  class="button-secondary" onclick="delete_word(${word['id']})">delete</button></td>
                     </tr>`;
             }
         } 
     }
     xhr.send(JSON.stringify(data));
     document.getElementById('new_word_en').value = '';
-    document.getElementById('new_word_he').value = '';
     document.getElementById('new_word_pt').value = '';
     document.getElementById('new_word_zh_cn').value = '';
 };
 
 function delete_word(wid) {
-    var url = window.location.host + `/words/delete/${wid}`;
+    var url = window.location.host + `/vocabbler/words/delete/${wid}`;
     var protocol = "http";
     var xhr = new XMLHttpRequest();
     if (!url.startsWith(protocol)) {
@@ -115,7 +114,7 @@ function delete_word(wid) {
 
 
 function start_quiz() {
-    var complete_href = "http://" + window.location.host + "/quiz";
+    var complete_href = "http://" + window.location.host + "/vocabbler/quiz";
     console.log("redirecting to " + complete_href);
     window.location.replace(complete_href);
 }
